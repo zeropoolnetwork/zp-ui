@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ZeroPoolNetwork } from 'zeropool-lib';
-import { CircomeLoaderService } from '../circome-loader.service';
+import { AccountService, IAccount } from '../account.service';
+import { ZeropoolService } from '../zeropool.service';
+import { Observable } from 'rxjs';
+import { switchMap, tap } from 'rxjs/operators';
+import { fromPromise } from 'rxjs/internal-compatibility';
 
 
 @Component({
@@ -10,15 +13,16 @@ import { CircomeLoaderService } from '../circome-loader.service';
 })
 export class MainComponent implements OnInit {
 
+  account$: Observable<IAccount>;
   balance = 1;
   history = [
     {type: 'transfer', amount: 10},
     {type: 'deposit', amount: 10},
     {type: 'withdraw', amount: 10},
   ];
-  address = '0xSOMETHIONG';
 
-  constructor() {
+  constructor(private accountSvc: AccountService, private zeropoolSvc: ZeropoolService) {
+    this.account$ = this.accountSvc.account$;
   }
 
   ngOnInit(): void {
@@ -26,7 +30,13 @@ export class MainComponent implements OnInit {
   }
 
   deposit() {
-
+    this.zeropoolSvc.activeZpNetwork$.pipe(
+      switchMap((zpn) => {
+        return fromPromise(zpn.deposit('0x0000000000000000000000000000000000000000', 100000));
+      })
+    ).subscribe((result) => {
+      debugger
+    });
   }
 
   transfer() {
