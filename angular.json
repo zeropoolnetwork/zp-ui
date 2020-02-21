@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-  "version": 1, 
+  "version": 1,
   "newProjectRoot": "projects",
   "projects": {
     "zp-ui": {
@@ -123,6 +123,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "zp-ui"
+    }
+  },
+  "defaultProject": "zp-ui",
+  "cli": {
+    "analytics": "e8300fe9-089d-430c-8f9c-0b067d4282fd"
+  }
 }
